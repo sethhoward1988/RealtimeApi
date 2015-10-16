@@ -1,0 +1,22 @@
+application: realtime-api-1100
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /favicon.png
+  static_files: favicon.png
+  upload: favicon.png
+
+- url: /css
+  static_dir: css
+  secure: always
+
+- url: /js
+  static_dir: js
+  secure: always
+
+- url: /
+  static_files: index.html
+  upload: index.html
+  secure: always

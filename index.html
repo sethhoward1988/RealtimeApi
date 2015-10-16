@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/spinner.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
+  </head>
+  <body>
+    <div class="screen">
+      <div class="loading">
+        <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+           <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+        </svg>
+      </div>
+      <div class="auth">
+        <h1>Woah, permission please!</h1>
+        <p>
+          Please let us use the Realtime API and create documents in your drive.
+          Click the auth button below to give us permission!
+        </p>
+        <div id="auth_button" class="btn">Authorize</div>
+      </div>
+    </div>
+    <main>
+      <h1>Realtime API Test</h1>
+      <table>
+        <tr>
+          <td>Title:</td>
+          <td><input id="doc_name" type="text" /></td>
+        </tr>
+        <tr>
+          <td>Id:</td>
+          <td><input id="doc_id" type="text" /></td>
+        </tr>
+        <tr>
+          <td>Token:</td>
+          <td><input id="oauth_token" type="text" /></td>
+        </tr>
+      </table>
+      <h2>Collaborative String</h2>
+      <textarea id="string"></textarea>
+      <h1>REST API</h1>
+      <h2>GetModel</h2>
+      <table>
+        <tr>
+          <td>Path:</td>
+          <td><input id="path" type="text" /></td>
+        </tr>
+        <tr>
+          <td>Depth:</td>
+          <td><input id="depth" type="number" /></td>
+        </tr>
+        <tr>
+          <td>Revision:</td>
+          <td><input id="revision" type="number" /></td>
+        </tr>
+      </table>
+      <div id="get_model" class="btn">Execute</div><br />
+      <div class="response">
+        <textarea disabled></textarea>
+      </div>
+    </main>
+    <script src="js/main.js"></script>
+  </body>
+</html>
