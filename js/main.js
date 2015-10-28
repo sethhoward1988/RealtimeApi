@@ -1,7 +1,8 @@
+var clientId = 'YOUR CLIENT ID HERE';
 
 var doc, model, root, id, token,
   realtimeUtils = new utils.RealtimeUtils({
-    clientId: '667993139297-somqjqbgk43klgugl6tlpf4b4ppbpjm6.apps.googleusercontent.com',
+    clientId: clientId,
     scopes: ['https://www.googleapis.com/auth/drive']
   });
 
@@ -20,9 +21,9 @@ realtimeUtils.authorize(function(response) {
 });
 
 function startApp() {
-  id = realtimeUtils.getParam('id');
+  id = realtimeUtils.getParam('id').replace('/', '');
   if (id && id != 'undefined') {
-    realtimeUtils.load(id.replace('/', ''), onFileLoaded, onFileInitialize);
+    realtimeUtils.load(id, onFileLoaded, onFileInitialize);
   } else {
     realtimeUtils.createRealtimeFile('Realtime API Test File', function(createResponse) {
       id = createResponse.id;
@@ -66,12 +67,14 @@ function loadMetadata() {
 
 function setBindings() {
   document.querySelector('#get_model').addEventListener('click', executeGetModel);
+  document.querySelector('#get_model_curl').addEventListener('click', showGetCurl);
+  document.querySelector('#patch_model').addEventListener('click', executePatchModel);
+  document.querySelector('#patch_model_curl').addEventListener('click', showPatchCurl);
 }
 
 function executeGetModel() {
   var path = document.querySelector('#path').value;
   var depth = document.querySelector('#depth').value;
-  var revision = document.querySelector('#revision').value;
 
   function callback () {
     document.querySelector('.response textarea').textContent = request.responseText;
@@ -80,7 +83,54 @@ function executeGetModel() {
 
   var request = new XMLHttpRequest();
   request.onload = callback;
-  request.open('get', 'https://realtime.googleapis.com/v1/files/' + id + '/model/' + revision + '/' + path + '?depth=' + depth);
-  request.setRequestHeader('Authorization', 'Bearer ' + token);
+  request.open('get', 'https://realtime.googleapis.com/v1/files/' + id + '/model/0/' + path + '?depth=' + depth + '&access_token=' + token);
   request.send();
+}
+
+function showGetCurl() {
+  var path = document.querySelector('#path').value;
+  var depth = document.querySelector('#depth').value;
+
+  var command = 'curl -H "Authorization: Bearer ' + token +
+    '" https://realtime.googleapis.com/v1/files/' + id + '/model/0/' + path + '?depth=' + depth;
+  document.querySelector('.response textarea').textContent = command;
+  document.querySelector('.response').classList.add('active');
+}
+
+function executePatchModel() {
+  var index = document.querySelector('#index').value;
+  var text = document.querySelector('#text').value;
+
+  function callback () {
+    document.querySelectorAll('.response textarea')[1].textContent = request.responseText;
+    document.querySelectorAll('.response')[1].classList.add('active');
+  }
+
+  var request = new XMLHttpRequest();
+  request.onload = callback;
+  request.open('PATCH', 'https://realtime.googleapis.com/v1/files/' + id + '/model/0', true);
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.setRequestHeader('Authorization', 'Bearer ' + token);
+  request.send(JSON.stringify({
+    path: 'root/demo_string',
+    insert: {
+      index: index,
+      stringValue: text
+    }
+  }));
+}
+
+function showPatchCurl() {
+  var command = 'curl -X PATCH -H "Content-Type: application/json" ' +
+    '-H "Authorization: Bearer ' + token +
+    '" -s https://realtime.googleapis.com/v1/files/' + id +
+    '/model/0 -d \'' + JSON.stringify({
+      path: 'root/demo_string',
+      insert: {
+        index: document.querySelector('#index').value,
+        stringValue: document.querySelector('#text').value
+      }
+    }) + '\'';
+  document.querySelectorAll('.response textarea')[1].textContent = command;
+  document.querySelectorAll('.response')[1].classList.add('active');
 }

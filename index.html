@@ -41,22 +41,44 @@
       <h2>Collaborative String</h2>
       <textarea id="string"></textarea>
       <h1>REST API</h1>
-      <h2>GetModel</h2>
+      <a href="https://developers.google.com/google-apps/realtime-tt/rest/v1/files.model/get" target="_blank">
+        <h2>GetModel</h2>
+      </a>
       <table>
         <tr>
           <td>Path:</td>
-          <td><input id="path" type="text" /></td>
+          <td><input id="path" type="text" value="root" /></td>
         </tr>
         <tr>
           <td>Depth:</td>
-          <td><input id="depth" type="number" /></td>
-        </tr>
-        <tr>
-          <td>Revision:</td>
-          <td><input id="revision" type="number" /></td>
+          <td><input id="depth" type="number" value="0"/></td>
         </tr>
       </table>
-      <div id="get_model" class="btn">Execute</div><br />
+      <div id="get_model" class="btn">Execute</div>
+      <div id="get_model_curl" class="btn">See Curl Command</div><br />
+      <div class="response">
+        <textarea disabled></textarea>
+      </div>
+      <a href="https://developers.google.com/google-apps/realtime-tt/rest/v1/files.model/patch" target="_blank">
+        <h2>PatchModel</h2>
+      </a>
+      <p>This is a sample <a href="https://developers.google.com/google-apps/realtime-tt/rest/v1/files.model/patch#insertoperation">insert patch</a> to the collaborative string above.
+      <table>
+        <tr>
+          <td>Path:</td>
+          <td><input id="path" type="text" disabled value="root/demo_string"/></td>
+        </tr>
+        <tr>
+          <td>Insert Index:</td>
+          <td><input id="index" type="number" /></td>
+        </tr>
+        <tr>
+          <td>Insert Text:</td>
+          <td><input id="text" /></td>
+        </tr>
+      </table>
+      <div id="patch_model" class="btn">Execute</div>
+      <div id="patch_model_curl" class="btn">See Curl Command</div><br />
       <div class="response">
         <textarea disabled></textarea>
       </div>
